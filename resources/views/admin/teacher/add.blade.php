@@ -39,34 +39,34 @@
     </div>
 </header>
 
-        <!-- Room Submission Form -->
+        <!-- Teacher Submission Form -->
         <section class="mt-6">
+
+        @include('_message')
+
             <div class="bg-white bg-opacity-80 backdrop-blur-lg p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-900">Add Room Details</h2>
+                <h2 class="text-xl font-semibold text-gray-900">Add Teacher Details</h2>
                 
                 <form action="" method="POST" class="mt-4 space-y-4">
                     @csrf
                     
                     <!-- Room Name -->
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Room Name</label>
-                        <input type="text" name="room_name" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Room Name">
+                        <label class="text-sm font-bold text-gray-700">First Name</label>
+                        <input type="text" name="first_name" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter First Name">
                     </div>
 
                     <!-- Room Capacity -->
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Capacity</label>
-                        <input type="number" name="capacity" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Capacity">
+                        <label class="text-sm font-bold text-gray-700">Email</label>
+                        <input type="email" name="email" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Email">
                     </div>
 
-                    <!-- Room Availability -->
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Availability</label>
-                        <select name="availability" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700">
-                            <option value="Available">Available</option>
-                            <option value="Under Maintenance">Under Maintenance</option>
-                        </select>
+                        <label class="text-sm font-bold text-gray-700">Password</label>
+                        <input type="password" name="password" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Password">
                     </div>
+
 
                     <div>
 
@@ -81,7 +81,7 @@
 
                     <!-- Submit Button -->
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                        Submit Room
+                        Submit Teacher
                     </button>
                 </form>
             </div>

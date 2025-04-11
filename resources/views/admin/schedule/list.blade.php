@@ -4,21 +4,61 @@
 
 <main class="relative z-10 flex-1 px-8 font-karla font-semibold">
     <!-- Top Bar -->
-    <header style="background-color: #1E40AF;" class="flex justify-between items-center bg-blue-800 text-white px-6 py-4 rounded-lg shadow-md">
-        <div class="flex items-center space-x-5">
-            <i class="fa-solid fa-calendar-days text-lg"></i>
-            <span id="current-date" class="text-sm">Loading date...</span>
-            <span id="current-time" class="text-sm font-semibold">Loading time...</span>
+    <header class="flex justify-between items-center bg-white text-gray px-6 py-4 rounded-lg shadow-md">
+    <div class="flex items-center space-x-5">
+        <i class="fa-solid fa-calendar-days text-lg"></i>
+        <span id="current-date" class="text-sm">Loading date...</span>
+        <span id="current-time" class="text-sm font-semibold">Loading time...</span>
+    </div>
+    <div class="flex items-center space-x-4">
+        <span class="text-sm font-semibold">Welcome, {{ Auth::user()->first_name }}!</span>
+
+        <!-- Notification Icon with Badge -->
+        <div class="relative">
+    <!-- Notification Bell Icon -->
+    <i class="fa-solid fa-bell text-lg cursor-pointer text-gray" id="notification-icon"></i>
+
+    <!-- Notification Badge -->
+    <span id="notification-badge"
+        class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full hidden">
+        0
+    </span>
+
+    <!-- Notification Dropdown -->
+    <div id="notification-dropdown"
+        class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 hidden border border-gray-200">
+        <div class="p-3">
+            <p class="text-sm font-semibold text-gray-700">Notifications</p>
+            <ul id="notification-list" class="mt-2 max-h-60 overflow-y-auto text-gray-800"></ul>
+           
         </div>
-        <div class="flex items-center space-x-4">
-            <span class="text-sm font-semibold">Welcome, {{ Auth::user()->first_name }}!</span>
-        </div>
-    </header>
+    </div>
+</div>
+    </div>
+</header>
 
     <!-- Schedule Section -->
     <section class="mt-6">
         <div class="bg-white bg-opacity-30 backdrop-blur-lg p-6 rounded-lg shadow-lg">
+            
             <h2 class="text-lg font-karla font-semibold text-gray-900 mb-4">Confirmed Schedule</h2>
+
+            <!-- Status Indicators -->
+            <div class="flex items-center space-x-4 text-sm font-medium my-7">
+                <div class="flex items-center space-x-1">
+                    <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                    <span>Upcoming</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span>
+                    <span>Ongoing</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                    <span>Completed</span>
+                </div>
+            </div>
+
 
             <!-- Calendar Navigation -->
             <div class="flex justify-between items-center mt-4">
@@ -113,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         for (let day = 1; day <= totalDays; day++) {
-            const isToday = day === now.getDate() && month === now.getMonth() && year === now.getFullYear() ? "border-red-500 border-4" : "";
+            const isToday = day === now.getDate() && month === now.getMonth() && year === now.getFullYear() ? "border-red-200 border-2" : "";
             let scheduleHTML = "";
 
             // Find schedules for this day
@@ -123,9 +163,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     const startTime = convertTo12Hour(schedule.start_time);
                     const endTime = convertTo12Hour(schedule.end_time);
                     scheduleHTML += `
-                        <div class="text-white text-xs mt-2 p-1 rounded ${schedule.status === 'pending' ? 'bg-orange-500' :
-                            schedule.status === 'accepted' ? 'bg-green-500' :
-                                schedule.status === 'declined' ? 'bg-red-500' : 'bg-gray-500'}">
+                        <div class="text-white text-xs mt-2 p-1 rounded ${schedule.status === 'upcoming' ? 'bg-green-500' :
+                            schedule.status === 'ongoing' ? 'bg-yellow-500' :
+                                schedule.status === 'declined' ? 'bg-red-500' : 'bg-green-500'}">
                             ${startTime} - ${endTime} (${schedule.room_name})<br>(${schedule.subject}) - ${schedule.teacher_name}
                         </div>
                     `;
@@ -133,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             calendarGrid.innerHTML += `
-                <div class="bg-blue-700 text-white p-4 rounded-lg ${isToday}">
+                <div class="bg-white text-gray p-4 rounded-lg ${isToday}">
                     <p class="text-xl font-extrabold">${day}</p>
                     ${scheduleHTML}
                 </div>

@@ -26,14 +26,14 @@ class AdminMiddleware
             else
             {
                 Auth::logout();
-                return redirect(url('auth.adminlanding'));
+                return redirect(url('/'));
             }
             
         }
         else
         {
             Auth::logout();
-            return redirect(url('adminlogin'));
+            return redirect(url('/'));
         }
         
     

@@ -7,19 +7,14 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
-<body class="bg-blue-100 flex flex-col items-center justify-center min-h-screen">
+<body class="flex flex-col items-center justify-center min-h-screen" style="background-color: #fbf9f9ff;">
 
-<div class="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-sm"
-     @style("background-image: url(" . asset('asset/img/background_image.png') . ");")>
-</div>
+<div class="absolute inset-0" style="background-color: #fbf9f9ff;"></div>
 
-
-
-    <!-- Overlay -->
-    <div class="absolute inset-0 bg-blue-900 bg-opacity-50"></div>
+ 
 
     <!-- Header -->
-    <header class="absolute top-4 left-4 right-4 flex justify-between items-center p-3 bg-primary text-white rounded-lg shadow-lg w-[95%] md:w-[80%] mx-auto">
+    <header class="absolute top-4 left-4 right-4 flex justify-between items-center p-3 bg-white text-gray rounded-lg shadow-lg w-[95%] md:w-[80%] mx-auto">
         <div class="flex items-center space-x-5">
             <i class="fa-solid fa-calendar-days text-lg"></i>
             <span id="current-date" class="text-sm">Loading date...</span>
@@ -40,12 +35,12 @@
         <h2 class="text-md font-semibold text-gray-700 uppercase mb-4">Log in as</h2>
 
         <!-- Login Buttons -->
-        <a href="{{ url('loginfront') }}" class="w-full flex items-center justify-between px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition mb-4">
+        <a href="{{ url('loginfront') }}" class="w-full flex items-center justify-between px-6 py-3 text-white bg-blue-500 rounded-lg hover:bg-blue-700 transition mb-4">
             <span class="font-medium">Teacher</span>
             <i class="fa-solid fa-right-to-bracket"></i>
         </a>
 
-        <a href="{{ url('loginfront') }}" class="w-full flex items-center justify-between px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+        <a href="{{ url('loginfront') }}" class="w-full flex items-center justify-between px-6 py-3 text-white bg-blue-500 rounded-lg hover:bg-blue-700 transition">
             <span class="font-medium">Admin</span>
             <i class="fa-solid fa-right-to-bracket"></i>
         </a>

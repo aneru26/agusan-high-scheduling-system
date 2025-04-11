@@ -6,7 +6,7 @@
 <main class="relative z-10 flex-1 px-8 font-karla font-semibold">
 
     <!-- Top Bar -->
-    <header style="background-color: #1E40AF;" class="flex justify-between items-center bg-blue-800 text-white px-6 py-4 rounded-lg shadow-md">
+    <header class="flex justify-between items-center bg-white text-gray px-6 py-4 rounded-lg shadow-md">
     <div class="flex items-center space-x-5">
         <i class="fa-solid fa-calendar-days text-lg"></i>
         <span id="current-date" class="text-sm">Loading date...</span>
@@ -18,7 +18,7 @@
         <!-- Notification Icon with Badge -->
         <div class="relative">
     <!-- Notification Bell Icon -->
-    <i class="fa-solid fa-bell text-lg cursor-pointer text-white" id="notification-icon"></i>
+    <i class="fa-solid fa-bell text-lg cursor-pointer text-gray" id="notification-icon"></i>
 
     <!-- Notification Badge -->
     <span id="notification-badge"
@@ -111,14 +111,25 @@
 
                     <!-- Contact Number -->
                     <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-sm font-bold">Phone Number</label>
-                            <input type="text" name="phone_number" class="w-full p-2 border rounded-md mt-1" value="{{ Auth::user()->phone_number }}">
-                        </div>
-                    </div>
+    <div>
+        <label class="text-sm font-bold">Phone Number</label>
+        <div class="flex items-center border rounded-md mt-1 p-2">
+            <span class="text-gray-600 font-semibold">+63</span>
+            <input type="text" name="phone_number" id="phone_number"
+                   class="w-full p-2 outline-none border-0 focus:ring-0"
+                   placeholder="9123456789" 
+                   value="{{ old('phone_number', Auth::user()->phone_number ? substr(Auth::user()->phone_number, -10) : '') }}"
+                   maxlength="10">
+        </div>
+        @error('phone_number')
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+</div>
+
 
                     <!-- Submit Button -->
-                    <button type="submit" class="mt-6 w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">
+                    <button type="submit" class="mt-6 w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-700">
                         Save Changes
                     </button>
                 </div>

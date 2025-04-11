@@ -85,10 +85,10 @@ public function getProfilePictureUrl()
 
 
 
-static public function getCustomer()
+static public function getTeacher()
 {
     $return = self::select('users.*')
-        ->where('users.user_type', '=', 3)
+        ->where('users.user_type', '=', 2)
         ->where('users.is_delete', '=', 0)
         ->orderBy('users.id', 'desc')
         ->paginate(10);

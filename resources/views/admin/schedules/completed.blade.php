@@ -6,7 +6,7 @@
     <main class="relative z-10 flex-1 px-8 font-karla font-semibold">
 
         <!-- Top Bar -->
-        <header style="background-color: #1E40AF;" class="flex justify-between items-center bg-blue-800 text-white px-6 py-4 rounded-lg shadow-md">
+        <header class="flex justify-between items-center bg-white text-gray px-6 py-4 rounded-lg shadow-md">
     <div class="flex items-center space-x-5">
         <i class="fa-solid fa-calendar-days text-lg"></i>
         <span id="current-date" class="text-sm">Loading date...</span>
@@ -18,7 +18,7 @@
         <!-- Notification Icon with Badge -->
         <div class="relative">
     <!-- Notification Bell Icon -->
-    <i class="fa-solid fa-bell text-lg cursor-pointer text-white" id="notification-icon"></i>
+    <i class="fa-solid fa-bell text-lg cursor-pointer text-gray" id="notification-icon"></i>
 
     <!-- Notification Badge -->
     <span id="notification-badge"
@@ -45,7 +45,7 @@
         @include(' _message')
 
             <div class="flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-white">Manage Teacher Schedules</h2>
+                <h2 class="text-xl font-semibold text-gray">Completed Teacher Schedules</h2>
                
             </div>
 
@@ -61,7 +61,6 @@
             <th class="py-3 px-4">Date</th>
             <th class="py-3 px-4">Time</th>
             <th class="py-3 px-4">Status</th>
-            <th class="py-3 px-4">Remarks</th>
             <th class="py-3 px-4">Action</th>
         </tr>
     </thead>

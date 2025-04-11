@@ -6,7 +6,7 @@
     <main class="relative z-10 flex-1 px-8 font-karla font-semibold">
 
         <!-- Top Bar -->
-        <header class="flex justify-between items-center bg-white text-gray px-6 py-4 rounded-lg shadow-md">
+        <header style="background-color: #1E40AF;" class="flex justify-between items-center bg-blue-800 text-white px-6 py-4 rounded-lg shadow-md">
     <div class="flex items-center space-x-5">
         <i class="fa-solid fa-calendar-days text-lg"></i>
         <span id="current-date" class="text-sm">Loading date...</span>
@@ -18,7 +18,7 @@
         <!-- Notification Icon with Badge -->
         <div class="relative">
     <!-- Notification Bell Icon -->
-    <i class="fa-solid fa-bell text-lg cursor-pointer text-gray" id="notification-icon"></i>
+    <i class="fa-solid fa-bell text-lg cursor-pointer text-white" id="notification-icon"></i>
 
     <!-- Notification Badge -->
     <span id="notification-badge"
@@ -42,45 +42,42 @@
         <!-- Room Submission Form -->
         <section class="mt-6">
             <div class="bg-white bg-opacity-80 backdrop-blur-lg p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-900">Add Room Details</h2>
+                <h2 class="text-xl font-semibold text-gray-900">Edit Teacher Details</h2>
                 
                 <form action="" method="POST" class="mt-4 space-y-4">
                     @csrf
                     
                     <!-- Room Name -->
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Room Name</label>
-                        <input type="text" name="room_name" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Room Name">
+                        <label class="text-sm font-bold text-gray-700">First Name</label>
+                        <input type="text" name="first_name"  value="{{ old ('first_name',$getRecord->first_name) }}" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter First Name">
                     </div>
 
-                    <!-- Room Capacity -->
+
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Capacity</label>
-                        <input type="number" name="capacity" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Capacity">
+                        <label class="text-sm font-bold text-gray-700">Email</label>
+                        <input type="email" name="email"  value="{{ old ('email',$getRecord->email) }}" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Email ">
                     </div>
 
-                    <!-- Room Availability -->
+
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Availability</label>
-                        <select name="availability" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700">
-                            <option value="Available">Available</option>
-                            <option value="Under Maintenance">Under Maintenance</option>
-                        </select>
+                        <label class="text-sm font-bold text-gray-700">Password</label>
+                        <input type="password" name="password"  value="{{ old ('password',$getRecord->password) }}" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required placeholder="Enter Paasword ">
                     </div>
 
-                    <div>
 
-                    <label class="text-sm font-bold text-gray-700">Subject</label>
-                    <select name="subject" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required>
-                        <option value="" disabled selected>Select Subject</option>
-                        <option value="E-tech">E-tech </option>
-                        <option value="Programming">Programming</option>
-                    </select>
-                </div>
+<div>
+    <label class="text-sm font-bold text-gray-700">Subject</label>
+    <select name="subject" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required>
+        <option value="" disabled {{ old('subject', $getRecord->subject) == '' ? 'selected' : '' }}>Select Subject</option>
+        <option value="E-tech" {{ old('subject', $getRecord->subject) == 'E-tech' ? 'selected' : '' }}>E-tech</option>
+        <option value="Programming" {{ old('subject', $getRecord->subject) == 'Programming' ? 'selected' : '' }}>Programming</option>
+    </select>
+</div>
 
 
                     <!-- Submit Button -->
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                         Submit Room
                     </button>
                 </form>

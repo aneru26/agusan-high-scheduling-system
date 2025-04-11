@@ -11,16 +11,11 @@
 <body class="bg-blue-100 flex flex-col items-center justify-center min-h-screen">
 
    <!-- Background Image -->
-   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-sm"
-     @style("background-image: url(" . asset('asset/img/background_image.png') . ");")>
-</div>
+   <div class="absolute inset-0" style="background-color: #fbf9f9ff;"></div>
 
-
-    <!-- Overlay -->
-    <div class="absolute inset-0 bg-blue-900 bg-opacity-50"></div>
 
       <!-- Header -->
-      <header class="absolute top-4 left-4 right-4 flex justify-between items-center p-3 bg-primary text-white rounded-lg shadow-lg w-[95%] md:w-[80%] mx-auto">
+      <header class="absolute top-4 left-4 right-4 flex justify-between items-center p-3 bg-white text-gray rounded-lg shadow-lg w-[95%] md:w-[80%] mx-auto">
         <div class="flex items-center space-x-5">
             <i class="fa-solid fa-calendar-days text-lg"></i>
             <span id="current-date" class="text-sm">Loading date...</span>
@@ -52,10 +47,10 @@
                 <input type="checkbox" id="remember" name="remember" class="mr-2">
                 <label for="remember" class="text-sm text-gray-700">Remember email</label>
             </div>
-            <button class="w-full py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-md">Log in</button>
+            <button class="w-full py-3 text-white bg-blue-500 hover:bg-blue-700 rounded-md">Log in</button>
         </form>
 
-        <p class="mt-4 text-sm text-gray-600">Don't have an account? <a href="{{ url('register')}}" class="text-white hover:underline">Sign up</a></p>
+        
     </div>
 
 

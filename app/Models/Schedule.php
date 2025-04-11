@@ -11,7 +11,7 @@ class Schedule extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['teacher_id', 'date', 'start_time', 'end_time', 'room_id', 'status'];
+    protected $fillable = ['teacher_id', 'date', 'start_time', 'end_time', 'room_id', 'status', 'remarks'];
 
 
 
@@ -64,12 +64,13 @@ public static function updateCompletedSchedules()
     $currentDate = $now->toDateString(); // Extract only the date (YYYY-MM-DD)
     $currentTime = $now->toTimeString(); // Extract only the time (HH:MM:SS)
 
-    $completedSchedules = static::where('status', 'accepted')
+    // Update schedules that should be marked as "completed"
+    $completedSchedules = static::where('status', 'ongoing')
         ->where(function ($query) use ($currentDate, $currentTime) {
             $query->whereDate('date', '<', $currentDate) // Past dates
                   ->orWhere(function ($q) use ($currentDate, $currentTime) {
                       $q->whereDate('date', '=', $currentDate) // Today's date
-                        ->whereRaw("TIME(end_time) < ?", [$currentTime]); // Use raw SQL for better accuracy
+                        ->whereRaw("TIME(end_time) < ?", [$currentTime]); // If end time is in the past
                   });
         })
         ->get();
@@ -80,7 +81,14 @@ public static function updateCompletedSchedules()
         // Notify users about room availability
         static::notifyRoomAvailability($schedule->room_id, $schedule->date, $schedule->start_time, $schedule->end_time);
     }
+
+    // Update schedules that should be marked as "ongoing"
+    static::where('status', 'upcoming')
+        ->whereDate('date', '=', $currentDate) // Check only today's schedules
+        ->whereRaw("TIME(start_time) = ?", [$currentTime]) // If start time is exactly now
+        ->update(['status' => 'ongoing']);
 }
+
 
 
 

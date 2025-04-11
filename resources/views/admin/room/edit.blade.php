@@ -6,7 +6,7 @@
     <main class="relative z-10 flex-1 px-8 font-karla font-semibold">
 
         <!-- Top Bar -->
-        <header style="background-color: #1E40AF;" class="flex justify-between items-center bg-blue-800 text-white px-6 py-4 rounded-lg shadow-md">
+        <header class="flex justify-between items-center bg-white text-gray px-6 py-4 rounded-lg shadow-md">
     <div class="flex items-center space-x-5">
         <i class="fa-solid fa-calendar-days text-lg"></i>
         <span id="current-date" class="text-sm">Loading date...</span>
@@ -18,7 +18,7 @@
         <!-- Notification Icon with Badge -->
         <div class="relative">
     <!-- Notification Bell Icon -->
-    <i class="fa-solid fa-bell text-lg cursor-pointer text-white" id="notification-icon"></i>
+    <i class="fa-solid fa-bell text-lg cursor-pointer text-gray" id="notification-icon"></i>
 
     <!-- Notification Badge -->
     <span id="notification-badge"
@@ -64,7 +64,6 @@
     <label class="text-sm font-bold text-gray-700">Availability</label>
     <select name="availability" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700">
         <option value="Available" {{ old('availability', $getRecord->availability) == 'Available' ? 'selected' : '' }}>Available</option>
-        <option value="Occupied" {{ old('availability', $getRecord->availability) == 'Occupied' ? 'selected' : '' }}>Occupied</option>
         <option value="Under Maintenance" {{ old('availability', $getRecord->availability) == 'Under Maintenance' ? 'selected' : '' }}>Under Maintenance</option>
     </select>
 </div>
@@ -81,7 +80,7 @@
 
 
                     <!-- Submit Button -->
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                         Submit Room
                     </button>
                 </form>

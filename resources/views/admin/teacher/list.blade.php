@@ -43,12 +43,12 @@
             @include('_message')
 
             <div class="flex flex-col sm:flex-row justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-900">List of Rooms</h2>
+                <h2 class="text-xl font-semibold text-gray-900">List of Teachers</h2>
 
                 <!-- Add Room Button -->
-                <a href="{{ url('admin/room/add') }}" 
+                <a href="{{ url('admin/teacher/add') }}" 
                     class="bg-blue-500 text-white px-4 py-2 mt-2 sm:mt-0 rounded-lg shadow-md hover:bg-blue-700 transition">
-                    + Add Room
+                    + Add Teacher
                 </a>
             </div>
 
@@ -58,35 +58,32 @@
                 <thead class="bg-white text-gray-700 shadow border-b border-gray-300">
 
                         <tr>
-                            <th class="py-3 px-4 whitespace-nowrap">Room Name</th>
-                            <th class="py-3 px-4 whitespace-nowrap">Capacity</th>
-                            <th class="py-3 px-4 whitespace-nowrap">Availability</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Profile</th>
+                            <th class="py-3 px-4 whitespace-nowrap">First Name</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Last Name</th>
+                            <th class="py-3 px-4 whitespace-nowrap">Email</th>
                             <th class="py-3 px-4 whitespace-nowrap">Subject</th>
-                            <th class="py-3 px-4 whitespace-nowrap">Created By</th>
                             <th class="py-3 px-4 whitespace-nowrap">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-300 text-center">
                         @if($getRecord->count() > 0)
-                            @foreach($getRecord as $room)
+                            @foreach($getRecord as $teacher)
                                 <tr>
-                                    <td class="py-3 px-4 whitespace-nowrap">{{ $room->room_name }}</td>
-                                    <td class="py-3 px-4 whitespace-nowrap">{{ $room->capacity }}</td>
+                                    <td class="py-3 px-4  flex justify-center items-center"> @if(!empty($teacher->getProfilePictureUrl()))
+        <img src="{{ $teacher->getProfilePictureUrl() }}" class="h-12 w-12 rounded-full">
+    @endif</td>
+                                    <td class="py-3 px-4 whitespace-nowrap">{{ $teacher->first_name }}</td>
+                                    <td class="py-3 px-4 whitespace-nowrap">{{ $teacher->last_name }}</td>
+                                    <td class="py-3 px-4 whitespace-nowrap">{{ $teacher->email }}</td>
+                                    <td class="py-3 px-4 whitespace-nowrap">{{ $teacher->subject }}</td>
+                                 
                                     <td class="py-3 px-4">
-                                        <span class="px-3 py-1 rounded-md text-white 
-                                            {{ $room->availability == 'Available' ? 'bg-green-500' : 
-                                               ($room->availability == 'Occupied' ? 'bg-red-500' : 'bg-yellow-500') }}">
-                                            {{ $room->availability }}
-                                        </span>
-                                    </td>
-                                    <td class="py-3 px-4 whitespace-nowrap">{{ $room->subject }}</td>
-                                    <td class="py-3 px-4 whitespace-nowrap">{{ $room->created_by_name }}</td>
-                                    <td class="py-3 px-4 flex space-x-2">
-                                        <a href="{{ url('admin/room/edit/'.$room->id) }}" 
+                                        <!-- <a href="{{ url('admin/teacher/edit/'.$teacher->id) }}" 
                                             class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-xs sm:text-sm">
                                             Edit
-                                        </a>
-                                        <a href="{{ url('admin/room/delete/'.$room->id) }}" 
+                                        </a> -->
+                                        <a href="{{ url('admin/teacher/delete/'.$teacher->id) }}" 
                                             class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-xs sm:text-sm"
                                             onclick="return confirm('Are you sure you want to delete this room?')">
                                             Delete
@@ -96,7 +93,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5" class="text-center py-4 text-gray-500">No rooms found.</td>
+                                <td colspan="5" class="text-center py-4 text-gray-500">No teachers found.</td>
                             </tr>
                         @endif
                     </tbody>

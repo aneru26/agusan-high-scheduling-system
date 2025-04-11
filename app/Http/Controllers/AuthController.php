@@ -23,7 +23,7 @@ class AuthController extends Controller
         {
             if(Auth::user()->user_type == 1)
             {
-                return redirect('admin/dashboard'); 
+                return redirect('admin/schedules/AllList'); 
             }
             else if(Auth::user()->user_type == 2)
             {
@@ -42,7 +42,7 @@ class AuthController extends Controller
         {
             if(Auth::user()->user_type == 1)
             {
-                return redirect('admin/dashboard'); 
+                return redirect('admin/schedules/AllList'); 
             }
             else if(Auth::user()->user_type == 2)
             { 

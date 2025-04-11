@@ -51,16 +51,11 @@
 
 
 </head>
-<body class="bg-blue-100 flex min-h-screen relative">
+<body class="flex min-h-screen relative" style="background-color: #fbf9f9ff;">
 
     <!-- Background Image -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-sm"
-        @style("background-image: url(" . asset('asset/img/background_image.png') . ");")>
-    </div>
-
-    <!-- Overlay -->
-    <div class="absolute inset-0 bg-blue-900 bg-opacity-50"></div>
-
+    <div class="absolute inset-0" style="background-color: #fbf9f9ff;"></div>
+    
     <!-- Mobile Toggle Button -->
     <button id="menu-toggle" class="absolute top-4 left-4 z-40 bg-white p-2 rounded-md md:hidden">
         <i class="fa-solid fa-bars text-lg"></i>
@@ -78,53 +73,84 @@
         <nav class="mt-6 font-karla font-extrabold">
             <ul class="space-y-4">
                 @if(Auth::user()->user_type == 1)
-                    <li>
-                        <a href="{{ url('admin/dashboard') }}" class="flex items-center p-3 rounded-lg 
-                            {{ Request::is('admin/dashboard') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-white hover:bg-white hover:bg-opacity-20' }}">
-                            <i class="fa-solid fa-chalkboard text-lg mr-3"></i> Schedule
-                        </a>
-                    </li>
+                <li class="relative group">
+                    
+    <button class="flex items-center w-full p-3 rounded-lg text-left 
+        {{ Request::is('admin/schedules*') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray hover:bg-white hover:bg-opacity-20' }}">
+
+
+        <i class="fa-solid fa-chalkboard text-lg mr-3"></i> Schedule
+        <i class="fa-solid fa-chevron-down ml-auto"></i>
+    </button>
+
+    <ul class="absolute left-0 mt-0 w-48 bg-white bg-opacity-90 text-sm text-blue-900 rounded shadow-lg hidden group-hover:block z-10">
+        <li>
+            <a href="{{ url('admin/schedules/AllList') }}" class="block px-4 py-2 hover:bg-blue-100">All Schedules</a>
+        </li>
+        <li>
+            <a href="{{ url('admin/schedules/upcoming') }}" class="block px-4 py-2 hover:bg-blue-100">Upcoming</a>
+        </li>
+        <li>
+            <a href="{{ url('admin/schedules/ongoing') }}" class="block px-4 py-2 hover:bg-blue-100">Ongoing</a>
+        </li>
+        <li>
+            <a href="{{ url('admin/schedules/completed') }}" class="block px-4 py-2 hover:bg-blue-100">Completed</a>
+        </li>
+        <li>
+            <a href="{{ url('admin/schedules/declined') }}" class="block px-4 py-2 hover:bg-blue-100">Decline</a>
+        </li>
+    </ul>
+</li>
+
                     <li>
                         <a href="{{ url('admin/schedule/list') }}" class="flex items-center p-3 rounded-lg 
-                            {{ Request::is('admin/schedule/list') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-white hover:bg-white hover:bg-opacity-20' }}">
-                            <i class="fa-solid fa-calendar text-lg mr-3"></i> Calendar
+                            {{ Request::is('admin/schedule/list') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray-700  hover:bg-white hover:bg-opacity-20' }}">
+                            <i class="fa-solid fa-calendar text-lg mr-3 "></i> Calendar
                         </a>
                     </li>
                     <li>
                         <a href="{{ url('admin/room/list') }}" class="flex items-center p-3 rounded-lg 
-                            {{ Request::is('admin/room/list') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-white hover:bg-white hover:bg-opacity-20' }}">
+                            {{ Request::is('admin/room/list') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray-700  hover:bg-white hover:bg-opacity-20' }}">
                             <i class="fa-solid fa-door-open text-lg mr-3"></i> Rooms
                         </a>
                     </li>
+
+                    <li>
+                 <a href="{{ url('admin/teacher/list') }}" class="flex items-center p-3 rounded-lg 
+                    {{ Request::is('admin/teacher/list') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray-700  hover:bg-white hover:bg-opacity-20' }}">
+                    <i class="fa-solid fa-chalkboard-teacher text-lg mr-3"></i> Teachers
+                          </a>
+                    </li>
+
                     <li>
                         <a href="{{ url('admin/account') }}" class="flex items-center p-3 rounded-lg 
-                            {{ Request::is('admin/account') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-white hover:bg-white hover:bg-opacity-20' }}">
+                            {{ Request::is('admin/account') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray-700  hover:bg-white hover:bg-opacity-20' }}">
                             <i class="fa-solid fa-cog text-lg mr-3"></i> Settings
                         </a>
                     </li>
                 @elseif(Auth::user()->user_type == 2)
                     <li>
                         <a href="{{ url('teacher/dashboard') }}" class="flex items-center p-3 rounded-lg 
-                            {{ Request::is('teacher/dashboard') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-white hover:bg-white hover:bg-opacity-20' }}">
+                            {{ Request::is('teacher/dashboard') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray-700  hover:bg-white hover:bg-opacity-20' }}">
                             <i class="fa-solid fa-chalkboard text-lg mr-3"></i> Teacher Dashboard
                         </a>
                     </li>
                     <li>
                         <a href="{{ url('teacher/schedule/list') }}" class="flex items-center p-3 rounded-lg 
-                            {{ Request::is('teacher/schedule/list') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-white hover:bg-white hover:bg-opacity-20' }}">
+                            {{ Request::is('teacher/schedule/list') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray-700  hover:bg-white hover:bg-opacity-20' }}">
                             <i class="fa-solid fa-calendar-alt text-lg mr-3"></i> Schedule
                         </a>
                     </li>
                     <li>
                         <a href="{{ url('teacher/account') }}" class="flex items-center p-3 rounded-lg 
-                            {{ Request::is('teacher/account') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-white hover:bg-white hover:bg-opacity-20' }}">
+                            {{ Request::is('teacher/account') ? 'bg-white bg-opacity-80 text-blue-700' : 'text-gray-700  hover:bg-white hover:bg-opacity-20' }}">
                             <i class="fa-solid fa-cog text-lg mr-3"></i> Settings
                         </a>
                     </li>
                 @endif  
 
                 <li class="mt-10">
-                    <a href="{{ url('logout') }}" class="flex items-center p-3 text-white hover:bg-red-600 hover:bg-opacity-80 rounded-lg">
+                    <a href="{{ url('logout') }}" class="flex items-center p-3 text-gray-700  hover:bg-red-600 hover:bg-opacity-80 rounded-lg">
                         <i class="fa-solid fa-sign-out-alt text-lg mr-3"></i> Log Out
                     </a>
                 </li>

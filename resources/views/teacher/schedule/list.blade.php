@@ -4,38 +4,31 @@
 
 <main class="relative z-10 flex-1 px-8 font-karla font-semibold">
     <!-- Top Bar -->
-    <header style="background-color: #1E40AF;" class="flex justify-between items-center bg-blue-800 text-white px-6 py-4 rounded-lg shadow-md">
-    <div class="flex items-center space-x-5">
-        <i class="fa-solid fa-calendar-days text-lg"></i>
-        <span id="current-date" class="text-sm">Loading date...</span>
-        <span id="current-time" class="text-sm font-semibold">Loading time...</span>
-    </div>
-    <div class="flex items-center space-x-4">
-        <span class="text-sm font-semibold">Welcome, {{ Auth::user()->first_name }}!</span>
+    <header class="flex flex-col sm:flex-row justify-between items-center bg-white text-gray-700  px-4 sm:px-6 py-4 rounded-lg shadow-md space-y-2 sm:space-y-0">
+        <div class="flex items-center space-x-4">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span id="current-date" class="text-sm">Loading date...</span>
+            <span id="current-time" class="text-sm font-semibold">Loading time...</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm font-semibold">Welcome, {{ Auth::user()->first_name }}!</span>
 
-        <!-- Notification Icon with Badge -->
-        <div class="relative">
-    <!-- Notification Bell Icon -->
-    <i class="fa-solid fa-bell text-lg cursor-pointer text-white" id="notification-icon"></i>
-
-    <!-- Notification Badge -->
-    <span id="notification-badge"
-        class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full hidden">
-        0
-    </span>
+            <!-- Notification Icon with Badge -->
+            <div class="relative">
+    <i class="fa-solid fa-bell text-lg cursor-pointer text-gray-700" id="notification-icon"></i>
+    <span id="notification-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
 
     <!-- Notification Dropdown -->
-    <div id="notification-dropdown"
-        class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 hidden border border-gray-200">
+    <div id="notification-dropdown" class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 hidden border border-gray-200">
         <div class="p-3">
             <p class="text-sm font-semibold text-gray-700">Notifications</p>
             <ul id="notification-list" class="mt-2 max-h-60 overflow-y-auto text-gray-800"></ul>
-           
         </div>
     </div>
 </div>
-    </div>
-</header>
+
+        </div>
+    </header>
 
     <!-- Schedule Section -->
     <section class="mt-6">
@@ -44,6 +37,23 @@
         <div class="bg-white bg-opacity-30 backdrop-blur-lg p-6 rounded-lg shadow-lg">
             <h1 class="text-lg font-karla font-semibold text-gray-900 mb-4">All Schedule</h2>
 
+
+              <!-- Status Indicators -->
+              <div class="flex items-center space-x-4 text-sm font-medium my-7">
+                <div class="flex items-center space-x-1">
+                    <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                    <span>Upcoming</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span>
+                    <span>Ongoing</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                    <span>Completed</span>
+                </div>
+            </div>
+            
             <!-- Teacher Info -->
             <div class="flex items-center space-x-4 mb-4">
             <img src="{{  Auth::user()->getProfilePictureUrl() }}" 
@@ -52,7 +62,7 @@
                     <h3 class="font-karla font-semibold">{{ Auth::user()->first_name }}</h3>
                     <p class="text-sm text-gray-600">{{ Auth::user()->email }}</p>
                 </div>
-                <span class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs">🟢 10hrs | Working Hours</span>
+               
             </div>
 
             <!-- Calendar -->
@@ -69,7 +79,7 @@
                         @endfor
                     </select>
                 </div>
-                <button id="openModalBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <button id="openModalBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Create Schedule +
                 </button>
             </div>
@@ -104,6 +114,18 @@
                 @csrf
                 <div class="space-y-4">
                     
+
+                  <!-- Room Selection -->
+                  <div class="flex flex-col">
+                        <label class="text-sm font-bold text-gray-700">Room</label>
+                        <select name="room_id" id="roomSelect" class="p-2 border border-gray-300 rounded-md bg-blue-600 text-white" required>
+                            <option value="">Pick a room</option>
+                            @foreach ($getRoom as $room)
+                                <option value="{{ $room->id }}">{{ $room->room_name }} ({{ $room->capacity }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Date Section -->
                     <div class="flex flex-col">
                         <label class="text-sm font-bold text-gray-700">Date</label>
@@ -113,23 +135,66 @@
 
                     <!-- Time Section -->
                     <div class="flex flex-col">
-                        <label class="text-sm font-bold text-gray-700">Time</label>
-                        <div class="flex space-x-2">
-                            <input type="time" name="start_time" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:ring focus:ring-blue-300" required>
-                            <input type="time" name="end_time" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:ring focus:ring-blue-300" required>
-                        </div>
-                    </div>
+    <label class="text-sm font-bold text-gray-700">Time</label>
+    <div class="flex space-x-2">
+        <select name="start_time" id="startTime" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required>
+            <option value="01:00">1:00 AM</option>
+            <option value="02:00">2:00 AM</option>
+            <option value="03:00">3:00 AM</option>
+            <option value="04:00">4:00 AM</option>
+            <option value="05:00">5:00 AM</option>
+            <option value="06:00">6:00 AM</option>
+            <option value="07:00">7:00 AM</option>
+            <option value="08:00">8:00 AM</option>
+            <option value="09:00">9:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option>
+            <option value="17:00">5:00 PM</option>
+            <option value="18:00">6:00 PM</option>
+            <option value="19:00">7:00 PM</option>
+            <option value="20:00">8:00 PM</option>
+            <option value="21:00">9:00 PM</option>
+            <option value="22:00">10:00 PM</option>
+            <option value="23:00">11:00 PM</option>
+            <option value="00:00">12:00 AM</option>
+        </select>
 
-                    <!-- Room Selection -->
-                    <div class="flex flex-col">
-                        <label class="text-sm font-bold text-gray-700">Room</label>
-                        <select name="room_id" class="p-2 border border-gray-300 rounded-md bg-blue-600 text-white" required>
-                            <option value="">Pick a room</option>
-                            @foreach ($getRoom as $room)
-                                <option value="{{ $room->id }}">{{ $room->room_name }} ({{ $room->capacity }})</option>
-                            @endforeach
-                        </select>
-                    </div>
+        <select name="end_time" id="endTime" class="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-700" required>
+            <option value="01:00">1:00 AM</option>
+            <option value="02:00">2:00 AM</option>
+            <option value="03:00">3:00 AM</option>
+            <option value="04:00">4:00 AM</option>
+            <option value="05:00">5:00 AM</option>
+            <option value="06:00">6:00 AM</option>
+            <option value="07:00">7:00 AM</option>
+            <option value="08:00">8:00 AM</option>
+            <option value="09:00">9:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option>
+            <option value="17:00">5:00 PM</option>
+            <option value="18:00">6:00 PM</option>
+            <option value="19:00">7:00 PM</option>
+            <option value="20:00">8:00 PM</option>
+            <option value="21:00">9:00 PM</option>
+            <option value="22:00">10:00 PM</option>
+            <option value="23:00">11:00 PM</option>
+            <option value="00:00">12:00 AM</option>
+        </select>
+    </div>
+</div>
+
+
+    
                 </div>
 
                 <!-- Modal Footer -->
@@ -165,6 +230,14 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("scheduleDate").setAttribute("min", today);
+    });
+</script>
+
+
 <!-- JavaScript for Calendar -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -195,16 +268,16 @@
                         scheduleHTML += `
                        <div class="
                             text-white text-xs mt-2 p-1 rounded 
-                            ${schedule.status === 'pending' ? 'bg-orange-500' : 
-                            schedule.status === 'accepted' ? 'bg-green-500' : 
-                            schedule.status === 'declined' ? 'bg-red-500' : 'bg-gray-500'}">
+                            ${schedule.status === 'upcoming' ? 'bg-green-500' : 
+                            schedule.status === 'ongoing' ? 'bg-yellow-500' : 
+                            schedule.status === 'completed' ? 'bg-red-500' : 'bg-red-500'}">
                             ${startTime} - ${endTime} (${schedule.room_name}) (${schedule.subject})
                         </div>
 
                     `;
                     }
                 });
-                calendarGrid.innerHTML += `<div class="bg-blue-700 text-white p-4 rounded-lg">${day}${scheduleHTML}</div>`;
+                calendarGrid.innerHTML += `<div class="bg-white text-gray p-4 rounded-lg">${day}${scheduleHTML}</div>`;
             }
         }
 
@@ -227,6 +300,121 @@
 
 
 
+<!-- Add this script section after your form in the Blade view -->
+<script>
+     var existingSchedules = @json($allRoomSchedules);
+
+    // Initialize original text for options on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeOriginalText('startTime');
+        initializeOriginalText('endTime');
+    });
+
+    document.getElementById('roomSelect').addEventListener('change', updateTimeOptions);
+    document.getElementById('scheduleDate').addEventListener('change', updateTimeOptions);
+    document.getElementById('startTime').addEventListener('change', updateTimeOptions);
+
+    function updateTimeOptions() {
+        var roomId = document.getElementById('roomSelect').value;
+        var date = document.getElementById('scheduleDate').value;
+        var startTime = document.getElementById('startTime').value;
+
+        resetTimeOptions('startTime');
+        resetTimeOptions('endTime');
+
+        if (!roomId || !date) return;
+
+        // Disable times based on existing schedules
+        var filteredSchedules = existingSchedules.filter(schedule => 
+            schedule.room_id == roomId && schedule.date === date
+        );
+        disableTimeOptions(filteredSchedules);
+
+        // Disable invalid end times based on selected start time
+        if (startTime) {
+            const startHour = convertTimeToNumber(startTime);
+            const endSelect = document.getElementById('endTime');
+            
+            Array.from(endSelect.options).forEach(option => {
+                const endHour = convertTimeToNumber(option.value);
+                if (endHour <= startHour && !(endHour === 24 && startHour < 24)) {
+                    option.disabled = true;
+                    option.textContent = 'Not Available - ' + option.dataset.originalText;
+                    option.style.backgroundColor = '#f0f0f0';
+                }
+            });
+        }
+    }
+
+    function resetTimeOptions(selectId) {
+        var select = document.getElementById(selectId);
+        Array.from(select.options).forEach(option => {
+            option.disabled = false;
+            option.style.backgroundColor = '';
+            option.textContent = option.dataset.originalText; // Restore original text
+        });
+    }
+
+    function disableTimeOptions(schedules) {
+        const startSelect = document.getElementById('startTime');
+        const endSelect = document.getElementById('endTime');
+
+        schedules.forEach(schedule => {
+            const existingStart = schedule.start_time.slice(0, 5);
+            const existingEnd = schedule.end_time.slice(0, 5);
+            const isOvernight = existingEnd <= existingStart;
+
+            // Disable start times
+            Array.from(startSelect.options).forEach(option => {
+                const time = option.value;
+                let shouldDisable = false;
+                
+                if (isOvernight) {
+                    shouldDisable = (time >= existingStart || time < existingEnd);
+                } else {
+                    shouldDisable = (time >= existingStart && time < existingEnd);
+                }
+
+                if (shouldDisable) {
+                    option.disabled = true;
+                    option.textContent = 'Not Available - ' + option.dataset.originalText;
+                    option.style.backgroundColor = '#f0f0f0';
+                }
+            });
+
+            // Disable end times
+            Array.from(endSelect.options).forEach(option => {
+                const time = option.value;
+                let shouldDisable = false;
+
+                if (isOvernight) {
+                    shouldDisable = (time > existingStart || time <= existingEnd);
+                } else {
+                    shouldDisable = (time > existingStart && time <= existingEnd);
+                }
+
+                if (shouldDisable) {
+                    option.disabled = true;
+                    option.textContent = 'Not Available - ' + option.dataset.originalText;
+                    option.style.backgroundColor = '#f0f0f0';
+                }
+            });
+        });
+    }
+
+    // Store original option text
+    function initializeOriginalText(selectId) {
+        const select = document.getElementById(selectId);
+        Array.from(select.options).forEach(option => {
+            option.dataset.originalText = option.textContent;
+        });
+    }
+
+    function convertTimeToNumber(time) {
+        const [hours] = time.split(':');
+        return hours === '00' ? 24 : parseInt(hours, 10);
+    }
+</script>
 
 @endsection
 

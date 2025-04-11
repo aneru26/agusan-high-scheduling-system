@@ -26,14 +26,14 @@ class CustomerMiddleware
             else
             {
                 Auth::logout();
-                return redirect(url('auth.customerlanding'));
+                return redirect(url('/'));
             }
             
         }
         else
         {
             Auth::logout();
-            return redirect(url('auth.customerlanding'));
+            return redirect(url('/'));
         }
         
     }

@@ -16,17 +16,15 @@ class ScheduleController extends Controller
     //teacher
     public function schedulelist()
     {
-        $userSubject = Auth::user()->subject; // Get the logged-in user's subject
-
-    // Fetch only the rooms where the room subject matches the user's subject
-         $getRoom = Room::where('subject', $userSubject)->get();
+        $user = Auth::user();
     
-        // Fetch only accepted schedules, including related teacher and room
+        // Fetch rooms related to the teacher's subject
+        $getRoom = Room::where('subject', $user->subject)->get();
+    
+        // Fetch schedules created by the logged-in teacher
         $schedules = Schedule::with(['room', 'teacher'])
-        ->whereIn('status', ['accepted', 'completed'])  // Filter schedules with status "accepted"
-        ->whereHas('teacher', function ($query) use ($userSubject) {
-            $query->where('subject', $userSubject); // Ensure the schedule's teacher has the same subject
-        })
+            ->whereIn('status', ['upcoming', 'completed', 'ongoing'])
+            ->where('teacher_id', $user->id)
             ->get()
             ->map(function ($schedule) {
                 return [
@@ -34,16 +32,31 @@ class ScheduleController extends Controller
                     'start_time' => $schedule->start_time,
                     'end_time' => $schedule->end_time,
                     'status' => $schedule->status,
-                    'room_name' => optional($schedule->room)->room_name, // Avoid null errors
+                    'room_id' => $schedule->room_id,
+                    'room_name' => optional($schedule->room)->room_name,
                     'subject' => optional($schedule->teacher)->subject,
                 ];
             });
     
-        return view('teacher.schedule.list', compact('getRoom', 'schedules'));
+        // Fetch all upcoming or ongoing schedules in rooms that match the teacher's subject
+        $allRoomSchedules = Schedule::with(['room', 'teacher'])
+            ->whereIn('status', ['upcoming', 'ongoing'])
+            ->whereHas('room', function ($query) use ($user) {
+                $query->where('subject', $user->subject);
+            })
+            ->get()
+            ->map(function ($schedule) {
+                return [
+                    'room_id' => $schedule->room_id,
+                    'date' => $schedule->date,
+                    'start_time' => $schedule->start_time,
+                    'end_time' => $schedule->end_time,
+                ];
+            });
+    
+        // Pass all needed data to the view
+        return view('teacher.schedule.list', compact('getRoom', 'schedules', 'allRoomSchedules'));
     }
-    
-    
-
     
 
     public function store(Request $request)
@@ -55,21 +68,6 @@ class ScheduleController extends Controller
             'room_id' => 'required|exists:rooms,id',
         ]);
     
-        // Get available slots using greedy algorithm
-        $availableSlots = $this->GreedyAlgorithm($request->date, $request->room_id);
-    
-        // Check if requested time is available
-        $isAvailable = false;
-        foreach ($availableSlots as $slot) {
-            if ($request->start_time >= $slot[0] && $request->end_time <= $slot[1]) {
-                $isAvailable = true;
-                break;
-            }
-        }
-    
-        if (!$isAvailable) {
-            return redirect()->back()->with('error', 'The selected time slot is unavailable. Choose another time.');
-        }
     
         // Save the new schedule if valid
         $schedule = Schedule::create([
@@ -139,7 +137,7 @@ class ScheduleController extends Controller
     {
         $getRoom = Room::all(); // Fetch all rooms
         $schedules = Schedule::with(['room', 'teacher']) // Load room and teacher details
-        ->whereIn('status', ['accepted', 'completed'])
+        ->whereIn('status', ['upcoming', 'completed' , 'ongoing'])
             ->get()
             ->map(function ($schedule) {
                 return [
@@ -181,18 +179,23 @@ class ScheduleController extends Controller
 
 public function decline(Request $request, $id)
 {
+    $request->validate([
+        'remarks' => 'required|string|max:255'
+    ]);
+
     $data = Schedule::findOrFail($id);
     $data->status = 'declined';
+    $data->remarks = $request->remarks;
     $data->save();
 
-    // Convert start and end times to 12-hour format
+    // Convert times
     $start_time = date('h:i A', strtotime($data->start_time));
     $end_time = date('h:i A', strtotime($data->end_time));
 
-    // Store notification for the teacher
+    // Notification
     Notification::create([
         'user_id' => $data->teacher_id,
-        'message' => "Your schedule on {$data->date} from {$start_time} to {$end_time} has been declined.",
+        'message' => "Your schedule on {$data->date} from {$start_time} to {$end_time} has been declined. Reason: {$request->remarks}",
     ]);
 
     return redirect()->back()->with('error', "Schedule Declined");
@@ -218,6 +221,32 @@ public function decline(Request $request, $id)
 
     return response()->json($notifications);
 }
+
+
+public function updateOngoingSchedules()
+{
+    $now = Carbon::now('Asia/Manila');
+    $now = Carbon::now()->format('H:i:s'); // Get current time in HH:MM:SS format
+
+    // Find schedules where the start_time matches the current time and status is 'upcoming'
+    $schedules = Schedule::where('start_time', $now)
+        ->where('status', 'upcoming')
+        ->get();
+
+    foreach ($schedules as $schedule) {
+        $schedule->status = 'ongoing';
+        $schedule->save();
+
+        // Notify the teacher
+        Notification::create([
+            'user_id' => $schedule->teacher_id,
+            'message' => "Your schedule on {$schedule->date} at {$schedule->start_time} has started and is now ongoing.",
+        ]);
+    }
+
+    return response()->json(['message' => 'Ongoing schedules updated successfully']);
+}
+
 
 
 public function markNotificationsAsRead()

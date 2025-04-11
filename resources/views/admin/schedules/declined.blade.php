@@ -5,8 +5,7 @@
     <!-- Main Content -->
     <main class="relative z-10 flex-1 px-8 font-karla font-semibold">
 
-        <!-- Top Bar -->
-        <header style="background-color: #1E40AF;" class="flex justify-between items-center bg-blue-800 text-white px-6 py-4 rounded-lg shadow-md">
+    <header class="flex justify-between items-center bg-white text-gray px-6 py-4 rounded-lg shadow-md">
     <div class="flex items-center space-x-5">
         <i class="fa-solid fa-calendar-days text-lg"></i>
         <span id="current-date" class="text-sm">Loading date...</span>
@@ -18,7 +17,7 @@
         <!-- Notification Icon with Badge -->
         <div class="relative">
     <!-- Notification Bell Icon -->
-    <i class="fa-solid fa-bell text-lg cursor-pointer text-white" id="notification-icon"></i>
+    <i class="fa-solid fa-bell text-lg cursor-pointer text-gray" id="notification-icon"></i>
 
     <!-- Notification Badge -->
     <span id="notification-badge"
@@ -38,14 +37,13 @@
 </div>
     </div>
 </header>
-
         <!-- Upcoming Schedules -->
         <section class="mt-6">
 
         @include(' _message')
 
             <div class="flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-white">Manage Teacher Schedules</h2>
+                <h2 class="text-xl font-semibold text-gray">Declined Teacher Schedules</h2>
                
             </div>
 
@@ -93,6 +91,7 @@
     </span>
 </td>
 
+<td class="py-3 px-4">{{ ($schedule->remarks) }}</td> 
 
 <td class="py-3 px-4 flex items-center gap-2">
         <!-- Modified Decline Button -->

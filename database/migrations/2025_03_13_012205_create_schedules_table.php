@@ -18,7 +18,8 @@ return new class extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->unsignedBigInteger('room_id');
-            $table->string('status')->default('pending'); // Default status is 'pending'
+            $table->string('status')->default('upcoming');
+            $table->string('remarks')->nullable();
             $table->timestamps();
         
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');

@@ -25,7 +25,11 @@ Route::post('/register', [AuthController::class, 'postRegister'])->name('post.re
 
 Route::group(['middleware' => 'admin'], function (){
 
-     Route::get('admin/dashboard',[DashboardController::class,'dashboard'] );
+     Route::get('admin/schedules/AllList',[DashboardController::class,'dashboard'] );
+     Route::get('admin/schedules/upcoming',[DashboardController::class,'upcoming'] );
+     Route::get('admin/schedules/ongoing',[DashboardController::class,'ongoing'] );
+     Route::get('admin/schedules/completed',[DashboardController::class,'completed'] );
+     Route::get('admin/schedules/declined',[DashboardController::class,'declined'] );
   
 
     // Route::get('admin/dashboard',[DashboardController::class,'adminDashboard'] );
@@ -38,7 +42,7 @@ Route::group(['middleware' => 'admin'], function (){
     //schedule
     Route::get('admin/schedule/list',[ScheduleController::class,'adminschedulelist'] );
     Route::get('admin/schedule/accept/{id}',[ScheduleController::class, 'accept'] );
-    Route::get('admin/schedule/decline/{id}',[ScheduleController::class, 'decline'] );
+    Route::post('admin/schedule/decline/{id}', [ScheduleController::class, 'decline'])->name('schedule.decline');
     Route::get('admin/schedule/delete/{id}',[ScheduleController::class, 'delete'] );    
 
 
@@ -49,6 +53,14 @@ Route::group(['middleware' => 'admin'], function (){
     Route::get('admin/room/edit/{id}',[RoomController::class, 'edit'] );
     Route::post('admin/room/edit/{id}',[RoomController::class, 'update'] );
     Route::get('admin/room/delete/{id}',[RoomController::class, 'delete'] );
+
+     //Teacher
+     Route::get('admin/teacher/list',[UserController::class,'list'] );
+     Route::get('admin/teacher/add',[UserController::class,'add'] );
+     Route::post('admin/teacher/add',[UserController::class, 'insert'] );
+     Route::get('admin/teacher/edit/{id}',[UserController::class, 'edit'] );
+     Route::post('admin/teacher/edit/{id}',[UserController::class, 'update'] );
+     Route::get('admin/teacher/delete/{id}',[UserController::class, 'delete'] );
 
 
 
